@@ -1,0 +1,37 @@
+
+version: '3.8'
+
+services:
+      postgresdb:
+            container_name: postgres
+            image: postgres
+            restart: always
+            ports:
+                  - 5432:5432
+            volumes:
+                  - ./backend/db:/data/db
+            environment:
+                - POSTGRES_USER=root
+                - POSTGRES_PASSWORD=root
+                - POSTGRES_DB=root
+            healthcheck:
+                  test: ["CMD-SHELL","pg_isready"]
+                  interval: 2s
+                  timeout: 2s
+                  retries: 5
+      frontend:
+            container_name: FrontEnd_App
+            build: ./notes-app
+            ports: 
+                  - 3000:3000
+      backend:
+            container_name: backend_App
+            restart: always
+            build: ./backend
+            ports:
+                - 5000:5000
+            depends_on:
+                  postgresdb:
+                        condition: service_healthy
+
+
