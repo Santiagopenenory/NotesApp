@@ -48,7 +48,7 @@
     };
     let updateNote = () => {
                             $activeNotes[value] ={title:userInputTitle,description:userInputDescription,archive:archiveState,categories:categories,id:key};
-                            updateNoteDb(key,JSON.stringify({title:userInputTitle,description:userInputDescription,archive:archiveState,categories:categories.toString(),id:key}))
+                            updateNoteDb(key,{title:userInputTitle,description:userInputDescription,archive:archiveState,categories:categories.toString(),id:key})
                             userInputCategory="";
                             toggle();}
 </script>

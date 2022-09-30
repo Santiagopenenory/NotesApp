@@ -1,47 +1,31 @@
 import {writable} from 'svelte/store';
+import axios from 'axios';
 
 export let saveNoteDb = async(note)=>{
-    const bd = JSON.stringify({
+    const bd = {
             title:note.title,
             description:note.description,
             categories:note.categories.toString(),
             archive:note.archive
-        })
-    const res = await fetch(`${import.meta.env.VITE_API_SERVER}/add-note`,{
-        mode:'cors',
-        method:'POST',
-        headers:{
-            "Content-type":"application/json"
-        },
-        body:bd
-    })
-    return (await res.json()).id;
+        }
+    const res = await axios.post(`${import.meta.env.VITE_API_SERVER}/add-note`,bd);
+    
+    return res.id;
     
 }
 
+
+
 export let removeNoteDb = async(id)=>{
-    const res = await fetch(`${import.meta.env.VITE_API_SERVER}/remove-note/${id}`,{
-        mode:'cors',
-        method:'DELETE',
-        headers:{
-            "Content-type":"application/json"
-        }
-    })
+    const res = await axios.delete(`${import.meta.env.VITE_API_SERVER}/remove-note/${id}`)
 }
 export let updateNoteDb = async(id,note)=>{
-    const res = await fetch(`${import.meta.env.VITE_API_SERVER}/update-note/${id}`,{
-        mode:'cors',
-        method:'PUT',
-        headers:{
-        "Content-Type":"application/json"
-        },
-        body:note
-    })
+    const res = await axios.put(`${import.meta.env.VITE_API_SERVER}/update-note/${id}`,note)
 }
 
 export let loadNotes = async()=>{
-    let notes = await fetch(`${import.meta.env.VITE_API_SERVER}/all-notes`);
-    activeNotes.set(await notes.json());
+    let notes = await axios.get(`${import.meta.env.VITE_API_SERVER}/all-notes`);
+    activeNotes.set(notes.data);
     convertCategory();
 }
 loadNotes();

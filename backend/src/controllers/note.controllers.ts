@@ -47,7 +47,7 @@ module.exports.deleteNote = async(req:Request,res:Response)=>{
 module.exports.updateNote = async(req:Request,res:Response)=>{
     try{
         const {id} = req.params;
-        const note = await Note.findBy({id:parseInt(req.params.id)});
+        const note = await Note.findBy({id:parseInt(id)});
         if(!note)return res.status(404).json({message: 'Note does not exists'});
         await Note.update(id,req.body);
         res.sendStatus(204);
