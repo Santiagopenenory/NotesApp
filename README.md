@@ -1,4 +1,4 @@
-# Ensolvers Challenge
+# Challenge
 
 
 ## Technologies used
